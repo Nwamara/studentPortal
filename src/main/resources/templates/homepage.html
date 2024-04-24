@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    <!-- Add Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles */
+        .options {
+            display: flex;
+            justify-content: top;
+            align-items: center;
+            height: 70vh;
+        }
+        .option {
+            margin: 10px;
+        }
+        .top-label {
+            margin-top: 70px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/nav"></div>
+<div class="container">
+
+    <h1 class="top-label">Welcome, <span th:text="${studentData.userName}"></span>!</h1>
+    <div class="options">
+        <div class="card option" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Enroll in a Course</h5>
+                <p class="card-text">Click the button below to view all available courses.</p>
+                <a href="/api/v1/students/courses" class="btn btn-primary">Enroll</a>
+            </div>
+        </div>
+        <div class="card option" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">View Profile</h5>
+                <p class="card-text">Click the button below to view your profile.</p>
+                <a th:href="@{/api/v1/students/profile/{studentId}(studentId=${studentData.id})}" class="btn btn-primary"
+                   onclick="checkStudentRegistrationNumber()">View Profile</a>
+            </div>
+        </div>
+        <div class="card option" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">View Enrollments</h5>
+                <p class="card-text">Click the button below to view your enrolled courses.</p>
+                <a href="/api/v1/enroll/course" class="btn btn-primary"
+                   onclick="checkStudentRegistrationNumber()">View Enrollments</a>
+            </div>
+        </div>
+        <div class="card option" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">View Graduation</h5>
+                <p class="card-text">Click the button below to view your graduation status.</p>
+                <a th:href="@{/api/v1/students/graduate/{reg_number}(reg_number=${studentData.studentRegistrationNumber})}"
+                   class="btn btn-primary"
+                   onclick="checkStudentRegistrationNumber()">View Graduation</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    function checkStudentRegistrationNumber() {
+        var studentRegistrationNumber = /*[[${studentData.studentRegistrationNumber}]]*/ null;
+        if (!studentRegistrationNumber) {
+            alert("Service is not available. You are not a student yet!");
+            return false; // Prevent default action (navigation)
+        }
+        return true; // Allow navigation
+    }
+</script>
+</body>
+</html>
